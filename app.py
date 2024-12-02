@@ -5,6 +5,9 @@ import os
 import tensorflow as tf
 from keras.models import load_model
 import numpy as np
+from dotenv import load_dotenv
+from flask_cors import CORS
+
 
 app = Flask(__name__)
 
@@ -77,4 +80,4 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(debug=True)
