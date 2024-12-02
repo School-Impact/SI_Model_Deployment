@@ -5,9 +5,6 @@ import os
 import tensorflow as tf
 from keras.models import load_model
 import numpy as np
-from dotenv import load_dotenv
-from flask_cors import CORS
-
 
 app = Flask(__name__)
 
@@ -31,12 +28,10 @@ def download_from_gcs(file_name, local_file_name):
 def load_model_and_encoder():
    
     # Download model.json and shards
-    download_from_gcs("model.json", "model.json")
-    download_from_gcs("group1-shard1of2.bin", "group1-shard1of2.bin")
-    download_from_gcs("group1-shard2of2.bin", "group1-shard2of2.bin")
-    
-    # Load TensorFlow/Keras model
-    model = tf.keras.models.load_model(LOCAL_MODEL_DIR)
+    model_path = download_from_gcs("models_h5/school_impact.h5", "school_impact.h5")
+
+    # Load Keras model
+    model = tf.keras.models.load_model(model_path)
 
     # Download and load label encoder
     label_encoder_path = download_from_gcs("label_encoder.pkl", "label_encoder.pkl")
@@ -80,4 +75,4 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8080)
