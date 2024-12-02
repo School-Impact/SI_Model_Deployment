@@ -17,7 +17,7 @@ LOCAL_MODEL_DIR = "/tmp/model"
 os.makedirs(LOCAL_MODEL_DIR, exist_ok=True)
 
 def download_from_gcs(file_name, local_file_name):
-    """Download a file from Google Cloud Storage."""
+   
     client = storage.Client()
     bucket = client.bucket(BUCKET_NAME)
     blob = bucket.blob(MODEL_PATH + file_name)
@@ -26,7 +26,7 @@ def download_from_gcs(file_name, local_file_name):
     return local_path
 
 def load_model_and_encoder():
-    """Download and load the model and label encoder."""
+   
     # Download model.json and shards
     download_from_gcs("model.json", "model.json")
     download_from_gcs("group1-shard1of2.bin", "group1-shard1of2.bin")
@@ -46,13 +46,13 @@ def load_model_and_encoder():
 model, label_encoder = load_model_and_encoder()
 
 def preprocess_input_text(text):
-    """Preprocess input text (example function)."""
+ 
     # Modify this function based on how you preprocess data in your Jupyter Notebook
     return text.lower().strip()
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    """Predict the category based on the input text."""
+    
     try:
         data = request.json
         if "interest" not in data:
