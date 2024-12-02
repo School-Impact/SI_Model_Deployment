@@ -1,0 +1,36 @@
+steps:
+  # Step 1: Build Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - build
+      - "-t"
+      - "REGION-docker.pkg.dev/PROJECT-ID/ml/si-model:latest"
+      - "."
+
+  # Step 2: Push Docker image to Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - push
+      - "REGION-docker.pkg.dev/PROJECT-ID/ml/si-model:latest"
+
+  # Step 3: Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "si-model"
+      - "--image"
+      - "REGION-docker.pkg.dev/PROJECT-ID/ml/si-model:latest"
+      - "--region"
+      - "REGION"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+
+# Set Substitutions for project-specific settings
+substitutions:
+  _REGION: "asia-southeast2"
+  _PROJECT_ID: "school-impact"
+
+timeout: 1200s
