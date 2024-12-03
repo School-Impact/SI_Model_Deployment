@@ -11,10 +11,10 @@ os.environ["TF_USE_LEGACY_KERAS"] = "1"
 app = Flask(__name__)
 
 # Memuat model TensorFlow (H5 file)
-model = load_model('school_impact.h5')
+model = load_model('model/school_impact.h5')
 
 # Memuat TF-IDF Vectorizer yang sudah dilatih dan disimpan
-tfidf_vectorizer = joblib.load('tfidf_vectorizer.pkl')
+tfidf_vectorizer = joblib.load('model/tfidf_vectorizer.pkl')
 
 
 @app.route('/predict', methods=['POST'])
@@ -22,7 +22,7 @@ def predict():
     try:
         # Ambil data input dari request
         data = request.get_json()
-        text = data.get('text')
+        text = data.get('interest')
         if not text:
             return jsonify({"error": "Text input required"}), 400
 
