@@ -13,6 +13,23 @@ steps:
       - push
       - "${_REGION}-docker.pkg.dev/${_PROJECT_ID}/ml/si-model:latest"
 
+  # Step 3: Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "si-model"
+      - "--image"
+      - "${_REGION}-docker.pkg.dev/${_PROJECT_ID}/ml/si-model:latest"
+      - "--region"
+      - "${_REGION}"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+      - "--port"
+      - "8080"
+
 # Set Substitutions for project-specific settings
 substitutions:
   _REGION: "asia-southeast2" # Set your desired region
