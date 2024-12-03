@@ -27,6 +27,8 @@ steps:
       - "--platform"
       - "managed"
       - "--allow-unauthenticated"
+      -"--port"
+      -"8080"
 
 # Set Substitutions for project-specific settings
 substitutions:
