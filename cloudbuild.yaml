@@ -4,14 +4,14 @@ steps:
     args:
       - build
       - "-t"
-      - "REGION-docker.pkg.dev/PROJECT-ID/ml/si-model:latest"
+      - "${_REGION}-docker.pkg.dev/${_PROJECT_ID}/ml/si-model:latest"
       - "."
 
   # Step 2: Push Docker image to Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
     args:
       - push
-      - "REGION-docker.pkg.dev/PROJECT-ID/ml/si-model:latest"
+      - "${_REGION}-docker.pkg.dev/${_PROJECT_ID}/ml/si-model:latest"
 
   # Step 3: Deploy to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -21,16 +21,16 @@ steps:
       - "deploy"
       - "si-model"
       - "--image"
-      - "REGION-docker.pkg.dev/PROJECT-ID/ml/si-model:latest"
+      - "${_REGION}-docker.pkg.dev/${_PROJECT_ID}/ml/si-model:latest"
       - "--region"
-      - "REGION"
+      - "${_REGION}"
       - "--platform"
       - "managed"
       - "--allow-unauthenticated"
 
 # Set Substitutions for project-specific settings
 substitutions:
-  _REGION: "asia-southeast2"
-  _PROJECT_ID: "school-impact"
+  _REGION: "asia-southeast2" # Set your desired region
+  _PROJECT_ID: "school-impact" # Your Google Cloud Project ID
 
 timeout: 1200s
